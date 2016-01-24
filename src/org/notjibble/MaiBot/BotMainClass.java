@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import org.apache.commons.daemon.*;
 
 public class BotMainClass extends PircBot implements Daemon {
