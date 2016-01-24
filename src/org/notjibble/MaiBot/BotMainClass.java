@@ -3,10 +3,12 @@ package org.notjibble.MaiBot;
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.ConnectionSettings;
 import org.jibble.pircbot.PircBot;
+
 import java.io.*;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import org.apache.commons.daemon.*;
 
 public class BotMainClass extends PircBot implements Daemon {
@@ -94,7 +96,8 @@ public class BotMainClass extends PircBot implements Daemon {
                 if (!timerRunning) {
                     String[] splitString = s4.split(" ");
                     String word = splitString[1];
-                    if (!word.startsWith("-")) {
+                    int wordLength = word.length();
+                    if (!word.startsWith("-") && wordLength <= wordLengthLimit && !word.isEmpty()) {
                         if (splitString[0].equals(".big") || splitString[0].equals(".gay")
                                 || splitString[0].equals(".cow")) {
                             String option = null;
@@ -103,28 +106,25 @@ public class BotMainClass extends PircBot implements Daemon {
                             } else if (s4.startsWith(".gay")) {
                                 option = "--gay";
                             }
-                            int wordLength = word.length();
-                            if (wordLength <= wordLengthLimit && !word.isEmpty()) {
-                                timerRunning = true;
-                                timer.schedule(new setTimer(), timerLength);
-                                String line;
-                                BufferedReader stdOutput = module.terminalIO.stdReader(s4, option, word);
-                                try {
-                                    while ((line = stdOutput.readLine()) != null) {
-                                        if (!s4.equals(".gay")) {
-                                            sendMessage(s, Colors.GREEN.concat(line));
-                                        } else {
-                                            sendMessage(s, line);
-                                        }
-                                        try {
-                                            Thread.sleep(500);
-                                        } catch (InterruptedException e) {
-                                            System.out.println(e.getMessage());
-                                        }
+                            timerRunning = true;
+                            timer.schedule(new setTimer(), timerLength);
+                            String line;
+                            BufferedReader stdOutput = module.terminalIO.stdReader(s4, option, word);
+                            try {
+                                while ((line = stdOutput.readLine()) != null) {
+                                    if (!s4.equals(".gay")) {
+                                        sendMessage(s, Colors.GREEN.concat(line));
+                                    } else {
+                                        sendMessage(s, line);
                                     }
-                                } catch (IOException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        Thread.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
+                            } catch (IOException e) {
+                                System.out.println(e.getMessage());
                             }
                         }
                     }
@@ -159,7 +159,7 @@ public class BotMainClass extends PircBot implements Daemon {
         final String password;
 
         private userOptions(String server, String bot_name, boolean verbose, String network, String channel, int port,
-                           boolean useSSL, boolean verifySSL, String password) {
+                            boolean useSSL, boolean verifySSL, String password) {
             this.server = server;
             this.bot_name = bot_name;
             this.verbose = verbose;
@@ -209,7 +209,8 @@ public class BotMainClass extends PircBot implements Daemon {
     }
 
     @Override
-    public void init(DaemonContext dc) throws Exception {}
+    public void init(DaemonContext dc) throws Exception {
+    }
 
     @Override
     public void start() throws Exception {
@@ -223,5 +224,6 @@ public class BotMainClass extends PircBot implements Daemon {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
