@@ -3,7 +3,6 @@ package org.notjibble.MaiBot;
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.ConnectionSettings;
 import org.jibble.pircbot.PircBot;
-
 import java.io.*;
 import java.util.Properties;
 import java.util.Timer;
