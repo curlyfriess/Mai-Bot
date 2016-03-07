@@ -2,5 +2,4 @@
 An IRC bot made in Java using PircBot. 
 
 TODO:
-Figure out how the heck deamons work.
-Clean it up.
+Get it running as a deamon using the apache library, impliment multiple versions of onMessage for each module. 
